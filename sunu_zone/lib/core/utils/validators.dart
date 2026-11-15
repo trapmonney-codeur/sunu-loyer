@@ -39,3 +39,14 @@ String? validerConfirmation(String? valeur, String motDePasse) {
   }
   return null;
 }
+
+String? validerEntierPositif(String? valeur, String message) {
+  final nombre = int.tryParse((valeur ?? '').trim());
+  if (nombre == null || nombre <= 0) return message;
+  return null;
+}
+
+String? validerTexteMin(String? valeur, int minimum, String message) {
+  if (valeur == null || valeur.trim().length < minimum) return message;
+  return null;
+}

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sunu_zone/annonce_detail/annonce_detail.dart';
-import '../../data/annonce_demo.dart';
-import 'widgets/annonce_card.dart';
+import 'widgets/liste_annonces.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -80,27 +78,7 @@ class HomePage extends StatelessWidget {
             ),
 
             // --- Liste défilante ---
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                itemCount: annoncesDemo.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  final annonce = annoncesDemo[index];
-                  return AnnonceCard(
-                    annonce: annonce,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => AnnonceDetailPage(annonce: annonce),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            const Expanded(child: ListeAnnonces()),
           ],
         ),
       ),

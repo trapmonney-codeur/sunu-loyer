@@ -4,6 +4,9 @@ import 'package:sunu_zone/features/home/widgets/champ_password.dart';
 import 'package:sunu_zone/features/home/widgets/champ_telephone.dart';
 import '../../core/utils/validators.dart';
 import 'inscription_page.dart';
+import '../../core/utils/formatters.dart';
+import '../../data/auth_service.dart';
+import '../../data/depots.dart';
 
 class ConnexionPage extends StatefulWidget {
   const ConnexionPage({super.key});
@@ -29,7 +32,6 @@ class _ConnexionPageState extends State<ConnexionPage> {
 
   Future<void> _seConnecter() async {
     if (!_formKey.currentState!.validate()) {
-      // Après un premier échec, les erreurs se mettent à jour en direct.
       setState(() => _modeValidation = AutovalidateMode.onUserInteraction);
       return;
     }
@@ -37,16 +39,27 @@ class _ConnexionPageState extends State<ConnexionPage> {
     FocusScope.of(context).unfocus();
     setState(() => _enChargement = true);
 
-    // Simulation du temps de réponse d'un serveur.
-    await Future.delayed(const Duration(milliseconds: 1500));
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    try {
+      await authService.seConnecter(
+        telephone: normaliserTelephone(_telephoneController.text),
+        motDePasse: _motDePasseController.text,
+      );
+    } catch (erreur) {
+      if (!mounted) return;
+      setState(() => _enChargement = false);
+      final message = erreur is AuthException
+          ? erreur.message
+          : 'Une erreur est survenue. Réessayez.';
+      messenger.showSnackBar(SnackBar(content: Text(message)));
+      return;
+    }
 
     if (!mounted) return;
-    setState(() => _enChargement = false);
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Connexion simulée')));
-    Navigator.of(context).pop();
+    navigator.popUntil((route) => route.isFirst);
+    messenger.showSnackBar(const SnackBar(content: Text('Connexion réussie')));
   }
 
   void _ouvrirInscription() {
