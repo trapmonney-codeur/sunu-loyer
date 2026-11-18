@@ -76,6 +76,22 @@ class AnnonceProprietaireCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _PastilleStatut(statut: annonce.statut),
+                    if (annonce.statut == StatutAnnonce.refusee &&
+                        annonce.motifRefus != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        'Motif : ${annonce.motifRefus}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: couleurs.error,
+                        ),
+                      ),
+                      Text(
+                        'Modifiez votre annonce pour la soumettre à nouveau.',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: couleurs.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

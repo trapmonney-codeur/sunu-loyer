@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sunu_zone/models/annonces.dart';
 import 'annonce_repository.dart';
+import 'firestore_mapping.dart';
 
 class FirestoreAnnonceRepository implements AnnonceRepository {
   FirestoreAnnonceRepository({FirebaseFirestore? firestore})
@@ -16,7 +17,7 @@ class FirestoreAnnonceRepository implements AnnonceRepository {
     return _collection
         .where('statut', isEqualTo: StatutAnnonce.publiee.name)
         .snapshots()
-        .map(_versListe);
+        .map(annoncesDepuisInstantane);
   }
 
   @override
@@ -24,7 +25,7 @@ class FirestoreAnnonceRepository implements AnnonceRepository {
     return _collection
         .where('proprietaireId', isEqualTo: proprietaireId)
         .snapshots()
-        .map(_versListe);
+        .map(annoncesDepuisInstantane);
   }
 
   @override
@@ -51,24 +52,4 @@ class FirestoreAnnonceRepository implements AnnonceRepository {
 
   @override
   Future<void> supprimer(String id) => _collection.doc(id).delete();
-
-  List<Annonce> _versListe(QuerySnapshot<Map<String, dynamic>> instantane) {
-    final annonces = instantane.docs.map(_versAnnonce).toList();
-    // Tri côté application : le plus récent en premier.
-    annonces.sort((a, b) {
-      final dateA = a.dateCreation ?? DateTime.now();
-      final dateB = b.dateCreation ?? DateTime.now();
-      return dateB.compareTo(dateA);
-    });
-    return annonces;
-  }
-
-  Annonce _versAnnonce(QueryDocumentSnapshot<Map<String, dynamic>> document) {
-    final donnees = document.data();
-    final horodatage = donnees['dateCreation'];
-    return Annonce.fromMap(document.id, {
-      ...donnees,
-      'dateCreation': horodatage is Timestamp ? horodatage.toDate() : null,
-    });
-  }
 }

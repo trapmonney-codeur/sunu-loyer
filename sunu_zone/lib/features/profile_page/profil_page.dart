@@ -3,6 +3,7 @@ import 'package:sunu_zone/features/home/widgets/invitation_connexion.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/depots.dart';
 import '../../models/utilisateur.dart';
+import '../admin/widgets/acces_administration.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key});
@@ -68,6 +69,10 @@ class _ProfilPageState extends State<ProfilPage> {
                         ),
                       ),
                       const SizedBox(height: 32),
+                      AccesAdministration(
+                        key: ValueKey(utilisateur.id),
+                        utilisateurId: utilisateur.id,
+                      ),
                       OutlinedButton.icon(
                         onPressed: authService.seDeconnecter,
                         icon: const Icon(Icons.logout),

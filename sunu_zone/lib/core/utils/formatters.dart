@@ -28,3 +28,38 @@ String formaterTelephone(String chiffres) {
   return '+221 ${numero.substring(0, 2)} ${numero.substring(2, 5)} '
       '${numero.substring(5, 7)} ${numero.substring(7)}';
 }
+
+/// 15/11/2026 à 14h05
+String formaterDate(DateTime date) {
+  String deux(int nombre) => nombre.toString().padLeft(2, '0');
+  return '${deux(date.day)}/${deux(date.month)}/${date.year} '
+      'à ${deux(date.hour)}h${deux(date.minute)}';
+}
+
+/// Minuscules et sans accents : "Médina" devient "medina". Sert aux recherches.
+String normaliserTexte(String texte) {
+  const accents = {
+    'à': 'a',
+    'â': 'a',
+    'ä': 'a',
+    'é': 'e',
+    'è': 'e',
+    'ê': 'e',
+    'ë': 'e',
+    'î': 'i',
+    'ï': 'i',
+    'ô': 'o',
+    'ö': 'o',
+    'ù': 'u',
+    'û': 'u',
+    'ü': 'u',
+    'ç': 'c',
+    'œ': 'oe',
+  };
+
+  final resultat = StringBuffer();
+  for (final lettre in texte.toLowerCase().split('')) {
+    resultat.write(accents[lettre] ?? lettre);
+  }
+  return resultat.toString();
+}

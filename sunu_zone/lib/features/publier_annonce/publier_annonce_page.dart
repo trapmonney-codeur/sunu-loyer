@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:sunu_zone/core/constants/types_logement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sunu_zone/features/home/widgets/bouton_chargement.dart';
@@ -19,8 +19,7 @@ class PublierAnnoncePage extends StatefulWidget {
 }
 
 class _PublierAnnoncePageState extends State<PublierAnnoncePage> {
-  static const _types = ['Appartement', 'Villa', 'Studio', 'Chambre', 'Maison'];
-
+  static const _types = typesLogement;
   final _formKey = GlobalKey<FormState>();
   final _nbPiecesController = TextEditingController();
   final _surfaceController = TextEditingController();

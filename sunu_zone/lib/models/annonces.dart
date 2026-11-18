@@ -37,6 +37,9 @@ class Annonce {
   final StatutAnnonce statut;
   final DateTime? dateCreation;
 
+  /// Rempli par l'administrateur quand l'annonce est refusée.
+  final String? motifRefus;
+
   const Annonce({
     required this.id,
     required this.type,
@@ -51,6 +54,7 @@ class Annonce {
     this.proprietaireId = '',
     this.statut = StatutAnnonce.enAttente,
     this.dateCreation,
+    this.motifRefus,
   });
 
   /// Construit une annonce à partir d'un document (id + contenu).
@@ -69,6 +73,7 @@ class Annonce {
       telephone: map['telephone'] as String? ?? '',
       statut: StatutAnnonce.depuisNom(map['statut'] as String?),
       dateCreation: map['dateCreation'] as DateTime?,
+      motifRefus: map['motifRefus'] as String?,
     );
   }
 
@@ -126,6 +131,7 @@ class Annonce {
       telephone: telephone,
       statut: statut ?? this.statut,
       dateCreation: dateCreation,
+      motifRefus: motifRefus,
     );
   }
 
